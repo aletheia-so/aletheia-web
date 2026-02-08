@@ -11,47 +11,67 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
+
     .box {
       text-align: center;
       width: 500px;
     }
+
     input {
       width: 100%;
       padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
       font-size: 16px;
-      margin-top: 10px;
     }
+
     button {
-      margin-top: 10px;
       padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
     }
+
     #answer {
       margin-top: 20px;
-      opacity: 0.9;
+      line-height: 1.5;
     }
   </style>
 </head>
+
 <body>
   <div class="box">
     <h1>Aletheia</h1>
     <p>Ask a question.</p>
-    <input id="q" placeholder="Enter your question..." />
-    <button onclick="ask()">Ask</button>
-    <div id="answer"></div>
+
+    <input id="question" placeholder="Enter your question..." />
+    <br>
+    <button onclick="askAI()">Ask</button>
+
+    <p id="answer"></p>
   </div>
 
 <script>
-async function ask() {
-  const q = document.getElementById('q').value;
-  const res = await fetch('/api/ask', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({q})
+async function askAI() {
+  const question = document.getElementById("question").value;
+
+  if (!question) return;
+
+  document.getElementById("answer").innerText = "Thinking...";
+
+  const res = await fetch("/api/ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question })
   });
+
   const data = await res.json();
-  document.getElementById('answer').innerText = data.answer;
+  document.getElementById("answer").innerText = data.answer;
 }
 </script>
+
 </body>
 </html>
