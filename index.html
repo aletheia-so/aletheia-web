@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aletheia</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #0b0f19;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      text-align: center;
+      width: 500px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+    }
+    #answer {
+      margin-top: 20px;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Aletheia</h1>
+    <p>Ask a question.</p>
+    <input id="q" placeholder="Enter your question..." />
+    <button onclick="ask()">Ask</button>
+    <div id="answer"></div>
+  </div>
+
+<script>
+async function ask() {
+  const q = document.getElementById('q').value;
+  const res = await fetch('/api/ask', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({q})
+  });
+  const data = await res.json();
+  document.getElementById('answer').innerText = data.answer;
+}
+</script>
+</body>
+</html>
